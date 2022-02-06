@@ -2,11 +2,14 @@
 
 namespace PhpOffice\PhpSpreadsheet\Calculation\MathTrig;
 
+use PhpOffice\PhpSpreadsheet\Calculation\ArrayEnabled;
 use PhpOffice\PhpSpreadsheet\Calculation\Exception;
 use PhpOffice\PhpSpreadsheet\Calculation\Functions;
 
 class Round
 {
+    use ArrayEnabled;
+
     /**
      * ROUND.
      *
@@ -15,10 +18,16 @@ class Round
      * @param mixed $number Should be numeric
      * @param mixed $precision Should be int
      *
-     * @return float|string Rounded number
+     * @return array<float|string>|float|string Rounded number
+     *         If an array of numbers is passed as the argument, then the returned result will also be an array
+     *            with the same dimensions
      */
     public static function round($number, $precision)
     {
+        if (is_array($number) || is_array($precision)) {
+            return self::evaluateArrayArguments([self::class, __FUNCTION__], $number, $precision);
+        }
+
         try {
             $number = Helpers::validateNumericNullBool($number);
             $precision = Helpers::validateNumericNullBool($precision);
@@ -34,13 +43,19 @@ class Round
      *
      * Rounds a number up to a specified number of decimal places
      *
-     * @param float $number Number to round
-     * @param int $digits Number of digits to which you want to round $number
+     * @param array|float $number Number to round
+     * @param array|int $digits Number of digits to which you want to round $number
      *
-     * @return float|string Rounded Number, or a string containing an error
+     * @return array|float|string Rounded Number, or a string containing an error
+     *         If an array of numbers is passed as the argument, then the returned result will also be an array
+     *            with the same dimensions
      */
     public static function up($number, $digits)
     {
+        if (is_array($number) || is_array($digits)) {
+            return self::evaluateArrayArguments([self::class, __FUNCTION__], $number, $digits);
+        }
+
         try {
             $number = Helpers::validateNumericNullBool($number);
             $digits = (int) Helpers::validateNumericNullSubstitution($digits, null);
@@ -64,13 +79,19 @@ class Round
      *
      * Rounds a number down to a specified number of decimal places
      *
-     * @param float $number Number to round
-     * @param int $digits Number of digits to which you want to round $number
+     * @param array|float $number Number to round
+     * @param array|int $digits Number of digits to which you want to round $number
      *
-     * @return float|string Rounded Number, or a string containing an error
+     * @return array|float|string Rounded Number, or a string containing an error
+     *         If an array of numbers is passed as the argument, then the returned result will also be an array
+     *            with the same dimensions
      */
     public static function down($number, $digits)
     {
+        if (is_array($number) || is_array($digits)) {
+            return self::evaluateArrayArguments([self::class, __FUNCTION__], $number, $digits);
+        }
+
         try {
             $number = Helpers::validateNumericNullBool($number);
             $digits = (int) Helpers::validateNumericNullSubstitution($digits, null);
@@ -97,10 +118,14 @@ class Round
      * @param mixed $number Expect float. Number to round.
      * @param mixed $multiple Expect int. Multiple to which you want to round.
      *
-     * @return float|string Rounded Number, or a string containing an error
+     * @return array|float|string Rounded Number, or a string containing an error
      */
     public static function multiple($number, $multiple)
     {
+        if (is_array($number) || is_array($multiple)) {
+            return self::evaluateArrayArguments([self::class, __FUNCTION__], $number, $multiple);
+        }
+
         try {
             $number = Helpers::validateNumericNullSubstitution($number, 0);
             $multiple = Helpers::validateNumericNullSubstitution($multiple, null);
@@ -132,12 +157,18 @@ class Round
      * Excel Function:
      *        EVEN(number)
      *
-     * @param float $number Number to round
+     * @param array|float $number Number to round
      *
-     * @return float|string Rounded Number, or a string containing an error
+     * @return array|float|string Rounded Number, or a string containing an error
+     *         If an array of numbers is passed as the argument, then the returned result will also be an array
+     *            with the same dimensions
      */
     public static function even($number)
     {
+        if (is_array($number)) {
+            return self::evaluateSingleArgumentArray([self::class, __FUNCTION__], $number);
+        }
+
         try {
             $number = Helpers::validateNumericNullBool($number);
         } catch (Exception $e) {
@@ -152,12 +183,18 @@ class Round
      *
      * Returns number rounded up to the nearest odd integer.
      *
-     * @param float $number Number to round
+     * @param array|float $number Number to round
      *
-     * @return float|string Rounded Number, or a string containing an error
+     * @return array|float|string Rounded Number, or a string containing an error
+     *         If an array of numbers is passed as the argument, then the returned result will also be an array
+     *            with the same dimensions
      */
     public static function odd($number)
     {
+        if (is_array($number)) {
+            return self::evaluateSingleArgumentArray([self::class, __FUNCTION__], $number);
+        }
+
         try {
             $number = Helpers::validateNumericNullBool($number);
         } catch (Exception $e) {
